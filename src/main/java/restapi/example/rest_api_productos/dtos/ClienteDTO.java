@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.models.Pedido;
 
 import java.util.List;
@@ -36,16 +37,16 @@ public class ClienteDTO {
 
     private boolean activo;
 
-    public ClienteDTO(Long id, String apellidoCliente, String nombreCliente, String dni, String mail, String direccion, String cuit, String nombreEmpresa, List<Pedido> pedidos) {
-        this.id = id;
-        this.apellidoCliente = apellidoCliente;
-        this.nombreCliente = nombreCliente;
-        this.dni = dni;
-        this.mail = mail;
-        this.direccion = direccion;
-        this.cuit = cuit;
-        this.nombreEmpresa = nombreEmpresa;
-        this.pedidos = pedidos;
+    public ClienteDTO(Cliente c) {
+        this.id = c.getId();
+        this.apellidoCliente = c.getApellidoCliente();
+        this.nombreCliente = c.getNombreCliente();
+        this.dni = c.getDni();
+        this.mail = c.getMail();
+        this.direccion = c.getDireccion();
+        this.cuit = c.getCuit();
+        this.nombreEmpresa = c.getNombreEmpresa();
+        this.pedidos = c.getPedidos();
         this.activo = false;
     }
 

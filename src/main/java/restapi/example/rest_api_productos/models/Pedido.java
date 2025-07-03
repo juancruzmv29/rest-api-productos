@@ -2,6 +2,7 @@ package restapi.example.rest_api_productos.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.HashMap;
 
@@ -14,7 +15,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id")
     @NotBlank
     private Cliente cliente;
@@ -27,7 +28,13 @@ public class Pedido {
     private double monto;
 
     @NotBlank
+    private double descuento;
+
+    @NotBlank
     private boolean acuerdoCliente;
+
+    @NotNull
+    private String detallePedido;
 
     public Pedido(Cliente cliente, double monto) {
         this.cliente = cliente;
@@ -73,5 +80,25 @@ public class Pedido {
 
     public void setAcuerdoCliente(boolean acuerdoCliente) {
         this.acuerdoCliente = acuerdoCliente;
+    }
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
+
+    public String toString() {
+        return "";
+    }
+
+    public String getDetallePedido() {
+        return detallePedido;
+    }
+
+    public void setDetallePedido(String detallePedido) {
+        this.detallePedido = detallePedido;
     }
 }

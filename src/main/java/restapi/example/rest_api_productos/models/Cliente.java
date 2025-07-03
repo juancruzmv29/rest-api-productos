@@ -129,4 +129,12 @@ public class Cliente {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
 }
