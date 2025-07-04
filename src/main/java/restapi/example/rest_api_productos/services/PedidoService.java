@@ -1,7 +1,9 @@
 package restapi.example.rest_api_productos.services;
 
+import restapi.example.rest_api_productos.dtos.PedidoReporteDTO;
 import restapi.example.rest_api_productos.models.Pedido;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface PedidoService {
@@ -11,7 +13,8 @@ public interface PedidoService {
 
     Pedido buscarPedidoPorId(Long id);
 
-    void actualizarPedido(Long id);
+
+    void actualizarPedido(Pedido p);
 
     void eliminarPedido(Long id);
 
@@ -21,6 +24,8 @@ public interface PedidoService {
 
     double verMontoPedido(Long id);
 
-    List<Pedido> verPedidosPorCliente(String dni);
+    HashMap<Long, Double> verPedidosPorCliente(String dni);
+
+    PedidoReporteDTO convertirAReporteDTO(Pedido p);
 
 }

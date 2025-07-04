@@ -31,12 +31,12 @@ public class PedidoReporteDTO {
         this.cliente = cliente;
     }
 
-    public List<Producto> getProductos() {
-        return (List<Producto>) productos;
+    public HashMap<Producto, Integer> getProductos() {
+        return productos;
     }
 
-    public void setPedidos(List<Producto> productos) {
-        this.productos = (HashMap<Producto, Integer>) productos;
+    public void setProductos(HashMap<Producto, Integer> productos) {
+        this.productos = productos;
     }
 
     public HashMap<Double, Long> getProductoMonto() {

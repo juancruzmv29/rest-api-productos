@@ -14,5 +14,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT c FROM CLIENTE c WHERE c.pedidos > 5")
     List<Cliente> buscarClientesConMasPedidos();
 
-
+    @Query("SELECT c FROM CLIENTE c WHERE c.dni == %dni%")
+    Cliente obtenerClientePorDNI(String dni);
 }

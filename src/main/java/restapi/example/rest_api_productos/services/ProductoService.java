@@ -7,11 +7,12 @@ import java.util.HashMap;
 public interface ProductoService {
 
 
-    HashMap<Integer, Producto> listarProductosExistencias();
+    HashMap<Integer, String> listarProductosExistencias();
 
     boolean buscarSiEstaProducto(String producto);
 
-    void actualizarProducto(Long id);
+
+    void actualizarProducto(Producto p);
 
     void eliminarProducto(Long id);
 

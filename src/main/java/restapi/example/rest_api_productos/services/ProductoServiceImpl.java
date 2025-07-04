@@ -1,34 +1,75 @@
 package restapi.example.rest_api_productos.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restapi.example.rest_api_productos.models.Producto;
+import restapi.example.rest_api_productos.repository.ProductoRepository;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class ProductoServiceImpl implements ProductoService{
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
     @Override
-    public HashMap<Integer, Producto> listarProductosExistencias() {
-        return null;
+    public HashMap<Integer, String> listarProductosExistencias() {
+        List<Producto> listaProductos = productoRepository.findAll();
+        HashMap<Integer, String> existenciasProducto = null;
+        for(Producto p : listaProductos) {
+            existenciasProducto.put(p.getStock(), p.getNombre());
+        }
+        return existenciasProducto;
     }
 
     @Override
     public boolean buscarSiEstaProducto(String producto) {
-        return false;
+        List<Producto> listaProductos = productoRepository.findAll();
+        for(Producto p : listaProductos) {
+            if(p.getNombre().equalsIgnoreCase(producto)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
     }
 
-    @Override
-    public void actualizarProducto(Long id) {
 
+    @Override
+    public void actualizarProducto(Producto p) {
+        Producto producto = productoRepository.getById(p.getId());
+        producto.setNombre(p.getNombre());
+        producto.setDescripcion(p.getDescripcion());
+        producto.setPrecio(p.getPrecio());
+        producto.setStock(p.getStock());
+        productoRepository.save(producto);
     }
 
     @Override
     public void eliminarProducto(Long id) {
-
+        Producto producto = productoRepository.getById(id);
+        productoRepository.delete(producto);
     }
 
     @Override
     public void darDeBajaProducto(Long id) {
+        Producto producto = productoRepository.getById(id);
+        producto.setActivo(false);
+        productoRepository.save(producto);
+    }
 
+    HashMap<Integer, String> buscarMinimosStocks() {
+        List<Producto> productos = productoRepository.findAll();
+        HashMap<Integer, String> listaProductos = null;
+        for(Producto p : productos) {
+            if (p.getStock() < 5) {
+                listaProductos.put(p.getStock(), p.getNombre());
+            }
+        }
+        return listaProductos;
     }
 }

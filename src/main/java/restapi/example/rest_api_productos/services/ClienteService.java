@@ -12,13 +12,12 @@ public interface ClienteService {
 
     Cliente obtenerCliente(String dni);
 
-    void guardarCliente(Cliente c);
+    Cliente guardarCliente(Cliente c);
 
-    void darDeBajaCliente(Cliente c);
+    void darDeBajaCliente(String dni);
 
     void actualizarCliente(Cliente c);
 
 
-
-
+    ClienteDTO convertirAClienteDTO(Cliente c);
 }
