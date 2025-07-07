@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
@@ -20,21 +21,24 @@ public class Pedido {
     @NotBlank
     private Cliente cliente;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido")
-    @NotBlank
-    private HashMap<Producto, Integer> productos;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", orphanRemoval = true)
+    @NotNull
+    private List<PedidoItem> productos; // Id, cantidad
 
-    @NotBlank
+    @NotNull
     private double monto;
 
-    @NotBlank
+    @NotNull
     private double descuento;
 
     @NotBlank
     private boolean acuerdoCliente;
 
-    @NotNull
+    @NotBlank
     private String detallePedido;
+
+    public Pedido() {
+    }
 
     public Pedido(Cliente cliente, double monto) {
         this.cliente = cliente;
@@ -58,11 +62,11 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public HashMap<Producto, Integer> getProductos() {
+    public List<PedidoItem> getProductos() {
         return productos;
     }
 
-    public void setProductos(HashMap<Producto, Integer> productos) {
+    public void setProductos(List<PedidoItem> productos) {
         this.productos = productos;
     }
 

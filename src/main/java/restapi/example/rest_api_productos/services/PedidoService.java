@@ -1,5 +1,6 @@
 package restapi.example.rest_api_productos.services;
 
+import restapi.example.rest_api_productos.dtos.PedidoDTO;
 import restapi.example.rest_api_productos.dtos.PedidoReporteDTO;
 import restapi.example.rest_api_productos.models.Pedido;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface PedidoService {
 
 
-    List<Pedido> listaPedidos();
+    List<PedidoDTO> listaPedidos();
 
     Pedido buscarPedidoPorId(Long id);
 

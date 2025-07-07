@@ -3,6 +3,8 @@ package restapi.example.rest_api_productos.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import restapi.example.rest_api_productos.dtos.PedidoDTO;
+import restapi.example.rest_api_productos.dtos.PedidoMapper;
 import restapi.example.rest_api_productos.dtos.PedidoReporteDTO;
 import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.models.Pedido;
@@ -10,6 +12,7 @@ import restapi.example.rest_api_productos.repository.PedidoRepository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoServiceImpl implements PedidoService{
@@ -17,9 +20,15 @@ public class PedidoServiceImpl implements PedidoService{
     @Autowired
     private PedidoRepository pedidoRepository;
 
+    @Autowired
+    PedidoMapper pedidoMapper;
+
     @Override
-    public List<Pedido> listaPedidos() {
-        return pedidoRepository.findAll();
+    public List<PedidoDTO> listaPedidos() {
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        return pedidos.stream()
+                .map(pedidoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

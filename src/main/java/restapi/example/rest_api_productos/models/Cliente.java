@@ -48,6 +48,9 @@ public class Cliente {
 
     private boolean activo;
 
+    public Cliente() {
+    }
+
     public Cliente(String apellidoCliente, String nombreCliente, String dni, String mail, String direccion, String cuit, String nombreEmpresa) {
         this.apellidoCliente = apellidoCliente;
         this.nombreCliente = nombreCliente;

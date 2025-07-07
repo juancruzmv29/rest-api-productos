@@ -2,6 +2,7 @@ package restapi.example.rest_api_productos.dtos;
 
 import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.models.Pedido;
+import restapi.example.rest_api_productos.models.PedidoItem;
 import restapi.example.rest_api_productos.models.Producto;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ public class PedidoReporteDTO {
 
     private Cliente cliente;
 
-    private HashMap<Producto, Integer> productos;
+    private List<PedidoItem> productos;
 
     private HashMap<Double, Long> productoMonto;
 
@@ -31,11 +32,11 @@ public class PedidoReporteDTO {
         this.cliente = cliente;
     }
 
-    public HashMap<Producto, Integer> getProductos() {
+    public List<PedidoItem> getProductos() {
         return productos;
     }
 
-    public void setProductos(HashMap<Producto, Integer> productos) {
+    public void setProductos(List<PedidoItem> productos) {
         this.productos = productos;
     }
 

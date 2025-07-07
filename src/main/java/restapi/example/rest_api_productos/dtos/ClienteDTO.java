@@ -1,9 +1,5 @@
 package restapi.example.rest_api_productos.dtos;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.models.Pedido;
 
@@ -36,6 +32,9 @@ public class ClienteDTO {
     private List<Pedido> pedidos;
 
     private boolean activo;
+
+    public ClienteDTO() {
+    }
 
     public ClienteDTO(Cliente c) {
         this.id = c.getId();
@@ -118,7 +117,7 @@ public class ClienteDTO {
         return pedidos;
     }
 
-    public void setPedidos(List<Pedido> pedidos) {
+    public void setPedidos(List<PedidoDTO> pedidos) {
         this.pedidos = pedidos;
     }
 

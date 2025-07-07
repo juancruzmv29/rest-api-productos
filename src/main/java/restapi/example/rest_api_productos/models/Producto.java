@@ -2,6 +2,7 @@ package restapi.example.rest_api_productos.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -17,10 +18,14 @@ public class Producto {
     private String nombre;
 
 
-    @NotBlank
+    @NotNull
     private double precio;
 
-    @NotBlank
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
+
+    @NotNull
     private int stock;
 
     @Length(min = 5, max = 50)
