@@ -1,12 +1,16 @@
 package restapi.example.rest_api_productos.dtos;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import restapi.example.rest_api_productos.mappers.PedidoMapper;
 import restapi.example.rest_api_productos.models.Cliente;
-import restapi.example.rest_api_productos.models.Pedido;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClienteDTO {
 
+    @Autowired
+    private PedidoMapper pedidoMapper;
 
     private Long id;
 
@@ -29,7 +33,7 @@ public class ClienteDTO {
     private String nombreEmpresa;
 
 
-    private List<Pedido> pedidos;
+    private List<PedidoDTO> pedidos;
 
     private boolean activo;
 
@@ -45,7 +49,10 @@ public class ClienteDTO {
         this.direccion = c.getDireccion();
         this.cuit = c.getCuit();
         this.nombreEmpresa = c.getNombreEmpresa();
-        this.pedidos = c.getPedidos();
+        this.pedidos = c.getPedidos()
+                .stream()
+                .map(pedidoMapper::toDTO)
+                .collect(Collectors.toList());
         this.activo = false;
     }
 
@@ -113,7 +120,7 @@ public class ClienteDTO {
         this.nombreEmpresa = nombreEmpresa;
     }
 
-    public List<Pedido> getPedidos() {
+    public List<PedidoDTO> getPedidos() {
         return pedidos;
     }
 

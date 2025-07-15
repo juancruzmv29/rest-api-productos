@@ -1,6 +1,7 @@
-package restapi.example.rest_api_productos.dtos;
+package restapi.example.rest_api_productos.mappers;
 
 import org.springframework.stereotype.Component;
+import restapi.example.rest_api_productos.dtos.PedidoItemDTO;
 import restapi.example.rest_api_productos.models.PedidoItem;
 
 @Component

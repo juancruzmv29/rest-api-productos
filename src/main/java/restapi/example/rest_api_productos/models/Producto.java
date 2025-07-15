@@ -21,10 +21,6 @@ public class Producto {
     @NotNull
     private double precio;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
-
     @NotNull
     private int stock;
 
@@ -34,11 +30,15 @@ public class Producto {
 
     private boolean activo;
 
+    public Producto() {
+    }
+
     public Producto(String nombre, double precio, int stock, String descripcion) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
         this.descripcion = descripcion;
+        this.activo = true;
     }
 
     public Long getId() {

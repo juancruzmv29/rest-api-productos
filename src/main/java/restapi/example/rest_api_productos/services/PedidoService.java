@@ -12,7 +12,7 @@ public interface PedidoService {
 
     List<PedidoDTO> listaPedidos();
 
-    Pedido buscarPedidoPorId(Long id);
+    PedidoDTO buscarPedidoPorId(Long id);
 
 
     void actualizarPedido(Pedido p);
@@ -24,6 +24,8 @@ public interface PedidoService {
     void aplicarDescuento(Long id);
 
     double verMontoPedido(Long id);
+
+    void eliminarProductoPedido(Long id, String producto, int cantidad);
 
     HashMap<Long, Double> verPedidosPorCliente(String dni);
 

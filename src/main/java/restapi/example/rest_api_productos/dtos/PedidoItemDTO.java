@@ -4,6 +4,8 @@ import restapi.example.rest_api_productos.models.PedidoItem;
 
 public class PedidoItemDTO {
 
+    private Long idProducto;
+
     private String nombreProducto;
 
     private double precioUnitario;
@@ -16,6 +18,7 @@ public class PedidoItemDTO {
     }
 
     public PedidoItemDTO(PedidoItem pedidoItem) {
+        this.idProducto = pedidoItem.getProducto().getId();
         this.nombreProducto = pedidoItem.getProducto().getNombre();
         this.precioUnitario = pedidoItem.getProducto().getPrecio();
         this.cantidad = pedidoItem.getCantidad();
@@ -52,5 +55,9 @@ public class PedidoItemDTO {
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public Long getProductoId() {
+        return idProducto;
     }
 }

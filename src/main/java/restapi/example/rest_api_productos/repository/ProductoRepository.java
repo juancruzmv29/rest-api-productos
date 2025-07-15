@@ -12,7 +12,7 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
 
-    @Query("SELECT p FROM PRODUCTOS p WHERE p.stock < 5")
+    @Query("SELECT p FROM Producto p WHERE p.stock < 5")
     HashMap<Integer, String> buscarMinimosStocks();
 
 }

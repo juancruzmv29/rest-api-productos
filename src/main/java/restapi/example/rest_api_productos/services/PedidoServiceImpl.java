@@ -1,13 +1,16 @@
 package restapi.example.rest_api_productos.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import restapi.example.rest_api_productos.dtos.PedidoDTO;
-import restapi.example.rest_api_productos.dtos.PedidoMapper;
+import restapi.example.rest_api_productos.dtos.ProductoResumenDTO;
+import restapi.example.rest_api_productos.mappers.PedidoItemMapper;
+import restapi.example.rest_api_productos.mappers.PedidoMapper;
 import restapi.example.rest_api_productos.dtos.PedidoReporteDTO;
 import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.models.Pedido;
+import restapi.example.rest_api_productos.models.PedidoItem;
+import restapi.example.rest_api_productos.models.Producto;
 import restapi.example.rest_api_productos.repository.PedidoRepository;
 
 import java.util.HashMap;
@@ -21,7 +24,10 @@ public class PedidoServiceImpl implements PedidoService{
     private PedidoRepository pedidoRepository;
 
     @Autowired
-    PedidoMapper pedidoMapper;
+    private PedidoMapper pedidoMapper;
+
+    @Autowired
+    private PedidoItemMapper pedidoItemMapper;
 
     @Override
     public List<PedidoDTO> listaPedidos() {
@@ -32,17 +38,23 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
-    public Pedido buscarPedidoPorId(Long id) {
-        return pedidoRepository.getById(id);
+    public PedidoDTO buscarPedidoPorId(Long id) {
+         Pedido pedido = pedidoRepository.getById(id);
+         return pedidoMapper.toDTO(pedido);
     }
 
     @Override
-    public void actualizarPedido(Pedido p) {
-        Pedido pedido = pedidoRepository.getById(p.getId());
-        pedido.setCliente(p.getCliente());
-        pedido.setDetallePedido(p.getDetallePedido());
-        pedido.setProductos(p.getProductos());
-        pedido.setMonto(p.getMonto());
+    public void actualizarPedido(Pedido pedido) {
+        Pedido pedidoActualizado = new Pedido();
+        pedidoActualizado.setCliente(pedido.getCliente());
+        pedidoActualizado.setMonto(pedido.getMonto());
+        pedidoActualizado.setProductos(pedido.getProductos());
+        pedidoActualizado.setAcuerdoCliente(pedido.isAcuerdoCliente());
+        pedidoActualizado.setDescuento(pedido.getDescuento());
+
+
+        pedidoRepository.save(pedidoActualizado);
+
     }
 
     @Override
@@ -89,9 +101,27 @@ public class PedidoServiceImpl implements PedidoService{
     }
 
     @Override
+    public void eliminarProductoPedido(Long id, String producto, int cantidad) {
+        Pedido pedido = pedidoRepository.getReferenceById(id);
+        for(PedidoItem p : pedido.getProductos()) {
+            if(p.getProducto().getNombre().equalsIgnoreCase(producto)) {
+                if(p.getCantidad() == 1) {
+                    pedido.getProductos().remove(p);
+                }
+                p.setCantidad(p.getCantidad()-cantidad);
+                if(p.getCantidad() < 0) {
+                    pedido.getProductos().remove(p);
+                }
+            } else {
+                return;
+            }
+        }
+    }
+
+    @Override
     public HashMap<Long, Double> verPedidosPorCliente(String dni) {
         List<Pedido> pedidos = pedidoRepository.findAll();
-        HashMap<Long, Double> listaPedidosCliente = null;
+        HashMap<Long, Double> listaPedidosCliente = new HashMap<>();
         for(Pedido p : pedidos) {
             if(p.getCliente().getDni().equalsIgnoreCase(dni)) {
                 listaPedidosCliente.put(p.getId(), p.getMonto());

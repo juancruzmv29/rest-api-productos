@@ -2,9 +2,12 @@ package restapi.example.rest_api_productos.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import restapi.example.rest_api_productos.dtos.ProductoResumenDTO;
+import restapi.example.rest_api_productos.mappers.ProductoMapper;
 import restapi.example.rest_api_productos.models.Producto;
 import restapi.example.rest_api_productos.repository.ProductoRepository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,10 +17,13 @@ public class ProductoServiceImpl implements ProductoService{
     @Autowired
     private ProductoRepository productoRepository;
 
+    @Autowired
+    private ProductoMapper productoMapper;
+
     @Override
     public HashMap<Integer, String> listarProductosExistencias() {
         List<Producto> listaProductos = productoRepository.findAll();
-        HashMap<Integer, String> existenciasProducto = null;
+        HashMap<Integer, String> existenciasProducto = new HashMap<>();
         for(Producto p : listaProductos) {
             existenciasProducto.put(p.getStock(), p.getNombre());
         }
@@ -25,17 +31,34 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    public boolean buscarSiEstaProducto(String producto) {
+    public List<ProductoResumenDTO> listarProductos() {
         List<Producto> listaProductos = productoRepository.findAll();
+        List<ProductoResumenDTO> listaDtos = new ArrayList<>();
+
+        for(Producto p : listaProductos) {
+            ProductoResumenDTO productoResumenDTO = productoMapper.toDto(p);
+            listaDtos.add(productoResumenDTO);
+        }
+        return listaDtos;
+    }
+
+    @Override
+    public ProductoResumenDTO buscarSiEstaProducto(String producto) {
+        List<Producto> listaProductos = productoRepository.findAll();
+        ProductoResumenDTO productoResumenDTO = new ProductoResumenDTO();
         for(Producto p : listaProductos) {
             if(p.getNombre().equalsIgnoreCase(producto)) {
-                return true;
-            }
-            else {
-                return false;
+                productoResumenDTO = productoMapper.toDto(p);
+            } else {
+                throw new RuntimeException("No se encuentra el producto");
             }
         }
-        return true;
+        return productoResumenDTO;
+    }
+
+    @Override
+    public ProductoResumenDTO buscarProductoPorId(Long id) {
+        return productoMapper.toDto(productoRepository.getById(id));
     }
 
 
@@ -64,7 +87,7 @@ public class ProductoServiceImpl implements ProductoService{
 
     HashMap<Integer, String> buscarMinimosStocks() {
         List<Producto> productos = productoRepository.findAll();
-        HashMap<Integer, String> listaProductos = null;
+        HashMap<Integer, String> listaProductos = new HashMap<>();
         for(Producto p : productos) {
             if (p.getStock() < 5) {
                 listaProductos.put(p.getStock(), p.getNombre());

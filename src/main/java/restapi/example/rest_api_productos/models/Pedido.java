@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,21 +19,21 @@ public class Pedido {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id")
-    @NotBlank
+    @NotNull
     private Cliente cliente;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pedido", orphanRemoval = true)
     @NotNull
-    private List<PedidoItem> productos; // Id, cantidad
+    private List<PedidoItem> productos = new ArrayList<>(); // Id, cantidad
 
     @NotNull
-    private double monto;
+    private Double monto;
 
     @NotNull
-    private double descuento;
+    private Double descuento;
 
     @NotBlank
-    private boolean acuerdoCliente;
+    private Boolean acuerdoCliente;
 
     @NotBlank
     private String detallePedido;
@@ -40,9 +41,9 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Cliente cliente, double monto) {
+    public Pedido(Cliente cliente) {
         this.cliente = cliente;
-        this.monto = monto;
+        this.acuerdoCliente = isAcuerdoCliente();
     }
 
 

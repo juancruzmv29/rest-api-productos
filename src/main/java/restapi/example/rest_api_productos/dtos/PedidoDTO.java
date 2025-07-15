@@ -62,4 +62,8 @@ public class PedidoDTO {
     public void setProductos(List<PedidoItemDTO> productos) {
         this.productos = productos;
     }
+
+    public boolean isAcuerdoCliente() {
+        return true;
+    }
 }

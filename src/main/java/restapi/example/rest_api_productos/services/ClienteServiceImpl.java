@@ -3,9 +3,13 @@ package restapi.example.rest_api_productos.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import restapi.example.rest_api_productos.dtos.ClienteDTO;
+import restapi.example.rest_api_productos.dtos.ClienteResumenDTO;
+import restapi.example.rest_api_productos.mappers.ClienteMapper;
+import restapi.example.rest_api_productos.mappers.ClienteResumenMapper;
 import restapi.example.rest_api_productos.models.Cliente;
 import restapi.example.rest_api_productos.repository.ClienteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,20 +18,33 @@ public class ClienteServiceImpl implements ClienteService{
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private ClienteMapper clienteMapper;
+
+    @Autowired
+    private ClienteResumenMapper clienteResumenMapper;
+
 
     @Override
-    public List<Cliente> mostrarClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteResumenDTO> mostrarClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<ClienteResumenDTO> clienteResumenDTOS = new ArrayList<>();
+        for(Cliente c : clientes) {
+            clienteResumenDTOS.add(clienteResumenMapper.toDTO(c));
+        }
+        return clienteResumenDTOS;
     }
 
     @Override
-    public Cliente obtenerCliente(String dni) {
-        return clienteRepository.obtenerClientePorDNI(dni);
+    public ClienteDTO obtenerCliente(String dni) {
+        Cliente c = clienteRepository.obtenerClientePorDNI(dni);
+        return clienteMapper.toDTO(c);
     }
 
     @Override
-    public Cliente guardarCliente(Cliente c) {
-        return clienteRepository.save(c);
+    public ClienteDTO guardarCliente(Cliente c) {
+        Cliente cliente = clienteRepository.save(c);
+        return clienteMapper.toDTO(cliente);
     }
 
     @Override
@@ -47,12 +64,17 @@ public class ClienteServiceImpl implements ClienteService{
         cliente.setDireccion(c.getDireccion());
         cliente.setMail(c.getMail());
         cliente.setNombreEmpresa(c.getNombreEmpresa());
-        clienteRepository.save(c);
+        clienteRepository.save(cliente);
+    }
+
+    @Override
+    public void eliminarCliente(Cliente c) {
+        clienteRepository.delete(c);
     }
 
     @Override
     public ClienteDTO convertirAClienteDTO(Cliente c) {
-        ClienteDTO clienteDTO = null;
+        ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setApellidoCliente(c.getApellidoCliente());
         clienteDTO.setNombreCliente(c.getNombreCliente());
         clienteDTO.setCuit(c.getCuit());
