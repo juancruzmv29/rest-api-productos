@@ -33,7 +33,7 @@ public class Pedido {
     private Double descuento;
 
     @NotBlank
-    private Boolean acuerdoCliente;
+    private Boolean acuerdoCliente = false;
 
     @NotBlank
     private String detallePedido;
@@ -41,9 +41,11 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Cliente cliente) {
+    public Pedido(Cliente cliente, double monto, double descuento, String detallePedido) {
         this.cliente = cliente;
-        this.acuerdoCliente = isAcuerdoCliente();
+        this.monto = monto;
+        this.descuento = descuento;
+        this.detallePedido = detallePedido;
     }
 
 
